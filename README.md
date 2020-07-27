@@ -1,6 +1,7 @@
 # CountryBlocking
-Блокировка работы в определённых странах
+Блокировка работы приложения в определённых странах
 
+Работает как через онлайн: https://ipapi.co так и через [RegionInfo](https://csharp.net-tutorials.com/ru/411/культурные-региональные-особенности/класс-regioninfo/)<br><br>
 Использовать так:
 ````csharp
 namespace BlockCountry
