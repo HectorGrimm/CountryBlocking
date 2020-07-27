@@ -1,4 +1,4 @@
-﻿namespace BlockCountry
+namespace BlockCountry
 {
     using System;
     using System.Collections.Generic;
@@ -59,7 +59,7 @@
                     country = doc.GetElementsByTagName("country_name")[0].InnerText;
                 }
                 catch { }
-                return country; // Возвращяем строку с полученными данными
+                return country; // Возвращаем строку с полученными данными
             }
         }
         private static string GetSourceXml(string url)
@@ -75,7 +75,7 @@
                 }
             }
             catch { }
-            return xmlStr; // Возращяем данные в виде строки
+            return xmlStr; // Возвращаем данные в виде строки
         }
         public static bool Inizialize()
         {
@@ -85,15 +85,16 @@
                 "Armenia", "Azerbaijan", "Belarus", "Kazakhstan", "Kyrgyzstan",
                 "Moldova", "Tajikistan", "Uzbekistan", "Ukraine", "Russia"
             };
+            
             ContryList.Sort(); // Сортируем список
             foreach (string list in ContryList) // Проходимся по списку стран
             {
                 if (Info.Contains(list)) // Сверяем полученную страну из xml ссылки с нашим списком ContryList
                 {
-                    return true; // Возвращяем true - если нашли совпадение!
+                    return true; // Возвращаем true - если нашли совпадение!
                 }
             }
-            return false; // Возращяем false - если не нашли ничего! 
+            return false; // Возвращаем false - если не нашли ничего!
         }
         public static bool OfflineInizialize()
         {
@@ -103,20 +104,16 @@
                 "Armenia", "Azerbaijan", "Belarus", "Kazakhstan", "Kyrgyzstan",
                 "Moldova", "Tajikistan", "Uzbekistan", "Ukraine", "Russia"
             };
-            try
+            ContryList.Sort(); // Сортируем список
+            var ri = new RegionInfo(CultureInfo.CurrentCulture.Name);
+            foreach (string list in ContryList) 
             {
-                ContryList.Sort(); // Сортируем список
-                var ri = new RegionInfo(CultureInfo.CurrentCulture.Name);
-                foreach (string list in ContryList)  
-                {
-                    if (list.Contains(ri.EnglishName))
-                    {
-                        return true; // Возвращяем true - если нашли совпадение!
-                    }
-                }
+               if (list.Contains(ri.EnglishName))
+               {
+                 return true; // Возвращаем true - если нашли совпадение!
+               }
             }
-            catch (Exception ex) { File.WriteAllText("ErrorCulture.txt", $"{ex.Message}\r\n"); }
-            return false; // Возращяем false - если не нашли ничего! 
+            return false; // Возвращаем false - если не нашли ничего!
         }
     }
 }
