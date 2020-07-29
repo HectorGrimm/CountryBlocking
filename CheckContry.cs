@@ -15,6 +15,12 @@ namespace BlockCountry
 
     public static class CheckContry
     {
+        // Список стран в которых нельзя работать приложению
+        private static readonly List<string> ContryList = new List<string>
+        {
+            "Armenia", "Azerbaijan", "Belarus", "Kazakhstan", "Kyrgyzstan",
+            "Moldova", "Tajikistan", "Uzbekistan", "Ukraine", "Russia"
+        };
         public static void SaveCurrentCountry(bool allsave)
         {
             if (allsave)
@@ -79,13 +85,6 @@ namespace BlockCountry
         }
         public static bool Inizialize()
         {
-            // Список стран в которых нельзя работать приложению
-            var ContryList = new List<string>
-            {
-                "Armenia", "Azerbaijan", "Belarus", "Kazakhstan", "Kyrgyzstan",
-                "Moldova", "Tajikistan", "Uzbekistan", "Ukraine", "Russia"
-            };
-            
             ContryList.Sort(); // Сортируем список
             foreach (string list in ContryList) // Проходимся по списку стран
             {
@@ -98,22 +97,37 @@ namespace BlockCountry
         }
         public static bool OfflineInizialize()
         {
-            // Список стран в которых нельзя работать приложению
-            var ContryList = new List<string>
-            {
-                "Armenia", "Azerbaijan", "Belarus", "Kazakhstan", "Kyrgyzstan",
-                "Moldova", "Tajikistan", "Uzbekistan", "Ukraine", "Russia"
-            };
             ContryList.Sort(); // Сортируем список
             var ri = new RegionInfo(CultureInfo.CurrentCulture.Name);
-            foreach (string list in ContryList) 
+            foreach (string list in ContryList)
             {
-               if (list.Contains(ri.EnglishName))
-               {
-                 return true; // Возвращаем true - если нашли совпадение!
-               }
+                if (list.Contains(ri.EnglishName))
+                {
+                    return true; // Возвращаем true - если нашли совпадение!
+                }
             }
             return false; // Возвращаем false - если не нашли ничего!
+        }
+
+        public static bool Local()
+        {
+            try
+            {
+                string currentlanguage = CultureInfo.CurrentCulture?.ToString();
+                var regionlanguage = new RegionInfo(currentlanguage);
+                var localZone = TimeZoneInfo.Local;
+                foreach (string country in ContryList)
+                {
+                    // Проверяем язык системы и часовой пояс
+                    if (country.Contains(regionlanguage.EnglishName) || localZone.Id.Contains(country))
+                    {
+                        return true;
+                    }
+                    // тут доп можно сделать проверку через онлайн сервер и.т.п как хотите.
+                }
+            }
+            catch (Exception) { }
+            return false;
         }
     }
 }
